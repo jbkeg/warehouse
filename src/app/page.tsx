@@ -1,65 +1,128 @@
-import { Button } from "@/components/Button/Button"
-import { LP_GRID_ITEMS } from "lp-items"
-import { Metadata } from "next"
 
-export const metadata: Metadata = {
-  title: "Next.js Enterprise Boilerplate",
-  twitter: {
-    card: "summary_large_image",
-  },
-  openGraph: {
-    url: "https://next-enterprise.vercel.app/",
-    images: [
-      {
-        width: 1200,
-        height: 630,
-        url: "https://raw.githubusercontent.com/Blazity/next-enterprise/main/.github/assets/project-logo.png",
-      },
-    ],
-  },
-}
+'use client';
 
-export default function Web() {
+import Layout from '@/components/Layout';
+import DashboardCard from '@/components/DashboardCard';
+import InboundTable from '@/components/InboundTable';
+
+export default function Home() {
+  const dashboardData = [
+    {
+      title: 'Total Inventory',
+      value: '12,847',
+      icon: 'ri-stack-line',
+      color: 'bg-blue-500',
+      trend: { value: 12, isPositive: true }
+    },
+    {
+      title: 'Pending Inbound',
+      value: '23',
+      icon: 'ri-inbox-line',
+      color: 'bg-yellow-500',
+      trend: { value: 8, isPositive: false }
+    },
+    {
+      title: 'Active Orders',
+      value: '156',
+      icon: 'ri-shopping-cart-line',
+      color: 'bg-green-500',
+      trend: { value: 15, isPositive: true }
+    },
+    {
+      title: 'Low Stock Items',
+      value: '7',
+      icon: 'ri-alert-line',
+      color: 'bg-red-500',
+      trend: { value: 3, isPositive: false }
+    }
+  ];
+
   return (
-    <>
-      <section className="bg-white dark:bg-gray-900">
-        <div className="mx-auto grid max-w-(--breakpoint-xl) px-4 py-8 text-center lg:py-16">
-          <div className="mx-auto place-self-center">
-            <h1 className="mb-4 max-w-2xl text-4xl leading-none font-extrabold tracking-tight md:text-5xl xl:text-6xl dark:text-white">
-              Next.js Enterprise Boilerplate
-            </h1>
-            <p className="mb-6 max-w-2xl font-light text-gray-500 md:text-lg lg:mb-8 lg:text-xl dark:text-gray-400">
-              Jumpstart your enterprise project with our feature-packed, high-performance Next.js boilerplate!
-              Experience rapid UI development, AI-powered code reviews, and an extensive suite of tools for a smooth and
-              enjoyable development process.
-            </p>
-            <Button href="https://github.com/Blazity/next-enterprise" className="mr-3">
-              Get started
-            </Button>
-            <Button
-              href="https://vercel.com/new/git/external?repository-url=https://github.com/Blazity/next-enterprise"
-              intent="secondary"
-            >
-              Deploy Now
-            </Button>
+    <Layout>
+      <div className="space-y-6">
+        {/* Dashboard Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+            <p className="text-gray-600">Overview of your warehouse operations</p>
           </div>
         </div>
-      </section>
-      <section className="bg-white dark:bg-gray-900">
-        <div className="mx-auto max-w-(--breakpoint-xl) px-4 py-8 sm:py-16 lg:px-6">
-          <div className="justify-center space-y-8 md:grid md:grid-cols-2 md:gap-12 md:space-y-0 lg:grid-cols-3">
-            {LP_GRID_ITEMS.map((singleItem) => (
-              <div key={singleItem.title} className="flex flex-col items-center justify-center text-center">
-                <div className="bg-primary-100 dark:bg-primary-900 mb-4 flex size-10 items-center justify-center rounded-full p-1.5 text-blue-700 lg:size-12">
-                  {singleItem.icon}
+
+        {/* Dashboard Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {dashboardData.map((card, index) => (
+            <DashboardCard
+              key={index}
+              title={card.title}
+              value={card.value}
+              icon={card.icon}
+              color={card.color}
+              trend={card.trend}
+            />
+          ))}
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white rounded-lg shadow-sm p-6 border">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-center">
+                <i className="ri-qr-scan-2-line w-6 h-6 flex items-center justify-center mx-auto mb-2 text-blue-600"></i>
+                <span className="text-sm font-medium text-gray-700">QR Scanner</span>
+              </button>
+              <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-center">
+                <i className="ri-export-line w-6 h-6 flex items-center justify-center mx-auto mb-2 text-green-600"></i>
+                <span className="text-sm font-medium text-gray-700">Process Orders</span>
+              </button>
+              <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-center">
+                <i className="ri-bar-chart-line w-6 h-6 flex items-center justify-center mx-auto mb-2 text-purple-600"></i>
+                <span className="text-sm font-medium text-gray-700">Generate Report</span>
+              </button>
+              <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-center">
+                <i className="ri-settings-3-line w-6 h-6 flex items-center justify-center mx-auto mb-2 text-gray-600"></i>
+                <span className="text-sm font-medium text-gray-700">Settings</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm p-6 border">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activities</h3>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <i className="ri-check-line text-green-600 w-4 h-4 flex items-center justify-center"></i>
                 </div>
-                <h3 className="mb-2 text-xl font-bold dark:text-white">{singleItem.title}</h3>
-                <p className="text-gray-500 dark:text-gray-400">{singleItem.description}</p>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">Inbound IB003 received</p>
+                  <p className="text-xs text-gray-500">2 hours ago</p>
+                </div>
               </div>
-            ))}
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <i className="ri-truck-line text-blue-600 w-4 h-4 flex items-center justify-center"></i>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">Order #ORD-2024-145 shipped</p>
+                  <p className="text-xs text-gray-500">4 hours ago</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                  <i className="ri-alert-line text-yellow-600 w-4 h-4 flex items-center justify-center"></i>
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">Low stock alert: Product SKU-789</p>
+                  <p className="text-xs text-gray-500">6 hours ago</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </section>
-    </>
-  )
+
+        {/* Inbound Management Section */}
+        <InboundTable />
+      </div>
+    </Layout>
+  );
 }
